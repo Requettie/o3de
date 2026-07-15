@@ -270,3 +270,18 @@ jobs:
       msvc_toolset_version: *msvc_toolset_version
       msvc_platform_toolset: *msvc_platform_toolset
       cmake_version: *cmake_version
+
+  Windows-Installer:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.windows_build }}
+    needs: Windows-Release
+    uses: ./.github/workflows/windows-build.yml
+    with:
+      compiler: msvc
+      config: installer
+      image: windows-2022
+      platform: Windows
+      type: installer_ci
+      last_artifact: true
+      msvc_toolset_version: *msvc_toolset_version
+      msvc_platform_toolset: *msvc_platform_toolset
+      cmake_version: *cmake_version
