@@ -275,3 +275,16 @@ jobs:
           overwrite: true
           path: |
             ${{ env.DEV_DRIVE_WORKSPACE }}\cache.tar
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: ${{ inputs.type == 'installer_ci' && !cancelled() }}
+        continue-on-error: true
+        with:
+          name: O3DE-Windows-installer
+          compression-level: 1
+          overwrite: true
+          if-no-files-found: warn
+          path: |
+            ${{ env.DEV_DRIVE_WORKSPACE }}\build\windows_installer\**\*_installer.exe
+            ${{ env.DEV_DRIVE_WORKSPACE }}\build\windows_installer\**\*.msi
