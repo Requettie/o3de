@@ -235,6 +235,13 @@ jobs:
           echo "Installing additional python dependencies..."
           python\pip.sh install tempfile2 PyGithub
 
+      - name: Clean WiX root path
+        # Strip trailing backslash from the WIX env var to avoid a quote-escaping issue when passed to CMake
+        if: ${{ inputs.type == 'installer_ci' }}
+        run: |
+          $wixPath = $env:WIX.TrimEnd('\\')
+          echo "LY_WIX_ROOT=$wixPath" >> $env:GITHUB_ENV
+
       - name: Build ${{ inputs.type }}
         # Builds with presets in ../scripts/build/Platform/Windows/build_config.json
         # Set temp folders to the workspace drive as the boot drive is slow
